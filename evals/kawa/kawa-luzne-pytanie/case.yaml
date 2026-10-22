@@ -22,7 +22,7 @@ graders:
   - name: wyklucza-kapsulki
     type: regex
     flags: mi
-    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kapsułki)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+    pattern: '(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kapsułki)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$)'
   - name: jedno-slowo-nie-fraza
     type: regex
     flags: mi

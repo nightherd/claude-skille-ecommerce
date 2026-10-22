@@ -10,7 +10,7 @@ graders:
   - name: blokuje-koldre-puchowa
     type: regex
     flags: mi
-    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kołdra|puchowa|zimowa)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:kołdra puchowa zimowa)\][ \t]*(?:\||$))'
+    pattern: '(?:(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kołdra|puchowa|zimowa)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:kołdra puchowa zimowa)\][ \t]*(?:\||$))'
   - name: nie-wyklucza-koldry
     type: regex
     flags: mi
@@ -19,7 +19,7 @@ graders:
   - name: blokuje-materac
     type: regex
     flags: mi
-    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:materac)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:materac 160x200)\][ \t]*(?:\||$))'
+    pattern: '(?:(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:materac)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:materac 160x200)\][ \t]*(?:\||$))'
   - name: nie-wyklucza-poduszki
     type: regex
     flags: mi

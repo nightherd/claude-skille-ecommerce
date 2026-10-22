@@ -10,11 +10,11 @@ graders:
   - name: wyklucza-ekspres
     type: regex
     flags: mi
-    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspres)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+    pattern: '(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspres)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$)'
   - name: wyklucza-ekspresy
     type: regex
     flags: mi
-    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspresy)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+    pattern: '(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspresy)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$)'
   - name: nie-wyklucza-ekspresu
     type: regex
     flags: mi

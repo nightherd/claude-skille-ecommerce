@@ -10,7 +10,7 @@ graders:
   - name: wyklucza-ortopedyczne
     type: regex
     flags: mi
-    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ortopedyczn[a-ząćęłńóśźż]*)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+    pattern: '(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ortopedyczn[a-ząćęłńóśźż]*)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$)'
   - name: nie-wyklucza-poduszki
     type: regex
     flags: mi
@@ -29,4 +29,4 @@ graders:
   - name: wyklucza-tania
     type: regex
     flags: mi
-    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:tania)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+    pattern: '(?:^|[|,;/])[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:tania)[*_`"”“]{0,3}[ \t]*(?:[|,;/]|$)'
