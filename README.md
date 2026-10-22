@@ -4,7 +4,7 @@ Darmowe skille dla Claude (Claude Code i Claude.ai) dla małych sklepów interne
 
 | Skill | Co robi |
 |---|---|
-| [przeglad-hasel](przeglad-hasel/) | przegląd wyszukiwanych haseł Google Ads: na co idzie budżet, co wykluczyć, co dodać jako słowa kluczowe |
+| [przeglad-hasel](skills/przeglad-hasel/) | przegląd wyszukiwanych haseł Google Ads: na co idzie budżet, co wykluczyć, co dodać jako słowa kluczowe |
 
 ## Przegląd haseł Google Ads
 
@@ -23,10 +23,10 @@ Metoda:
 
 ### Przykład
 
-[`sklep-z-kawa.csv`](przeglad-hasel/przyklad/sklep-z-kawa.csv) to zmyślony sklep z kawą: 44 hasła z 30 dni w dwóch kampaniach. Liczby liczy skrypt, oceną zajmuje się Claude.
+[`sklep-z-kawa.csv`](skills/przeglad-hasel/przyklad/sklep-z-kawa.csv) to zmyślony sklep z kawą: 44 hasła z 30 dni w dwóch kampaniach. Liczby liczy skrypt, oceną zajmuje się Claude.
 
 ```
-$ python3 przeglad-hasel/hasla.py przeglad-hasel/przyklad/sklep-z-kawa.csv 40
+$ python3 skills/przeglad-hasel/hasla.py skills/przeglad-hasel/przyklad/sklep-z-kawa.csv 40
 sklep-z-kawa.csv: hasła 44, kliknięcia 635, koszt 1362.00 PLN
 Raport pokazuje 635 z 1052 kliknięć (60%), resztę Google ukrywa.
 
@@ -52,14 +52,16 @@ Claude Code:
 
 ```
 git clone https://github.com/nightherd/claude-skille-ecommerce.git
-cp -r claude-skille-ecommerce/przeglad-hasel ~/.claude/skills/
+cp -r claude-skille-ecommerce/skills/przeglad-hasel ~/.claude/skills/
 ```
+
+Repo jest też wtyczką Claude Code (`skille-ecommerce`), więc można je wczytać na jedną sesję: `claude --plugin-dir claude-skille-ecommerce`.
 
 Potem w Claude Code napisz na przykład: „przejrzyj hasła z ~/Downloads/raport.csv”.
 
-Claude.ai: spakuj cały folder (`zip -r przeglad-hasel.zip przeglad-hasel/`, w ZIP-ie musi być folder, nie same pliki) i wgraj go w Customize → Skills. Skrypt wymaga włączonego wykonywania kodu.
+Claude.ai: spakuj cały folder skilla (`cd claude-skille-ecommerce/skills && zip -r przeglad-hasel.zip przeglad-hasel/`, w ZIP-ie musi być folder, nie same pliki) i wgraj go w Customize → Skills. Skrypt wymaga włączonego wykonywania kodu.
 
-Test: `python3 przeglad-hasel/test_hasla.py`
+Test skryptu: `python3 skills/przeglad-hasel/test_hasla.py`
 
 ### Czego to nie robi
 
