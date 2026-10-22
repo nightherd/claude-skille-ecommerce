@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: planszowki-slowa-kluczowe
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: dodaje-gry-imprezowe
+    type: regex
+    flags: i
+    pattern: 'gry imprezowe'
+  - name: dodaje-gry-rodzinne
+    type: regex
+    flags: i
+    pattern: 'gry rodzinne'
+  - name: kandydaci
+    type: llm
+    criteria: |
+      Hasła z konwersją, które nie są jeszcze słowami kluczowymi: „gra planszowa catan”, „dixit”, „gry imprezowe”, „gry planszowe dla 2 osób”, „wsiąść do pociągu europa”, „jaka gra planszowa na prezent”, „gry rodzinne”. Już są słowami kluczowymi: „gry planszowe”, „gry planszowe dla dzieci”, „gry kooperacyjne”.
+      PASS, jeśli odpowiedź poleca dodać jako słowa kluczowe co najmniej trzy hasła z pierwszej listy i nie poleca dodawać jako nowych słów kluczowych haseł z drugiej listy.
+      FAIL w przeciwnym razie.

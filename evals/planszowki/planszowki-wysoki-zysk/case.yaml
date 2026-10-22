@@ -1,0 +1,20 @@
+schema_version: "1.1"
+name: planszowki-wysoki-zysk
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: nic-nie-wyklucza
+    type: llm
+    criteria: |
+      To raport, w którym prawie cały koszt idzie na hasła z oferty sklepu z grami planszowymi, a hasła bez konwersji to w większości gry, które sklep sprzedaje.
+      PASS, jeśli odpowiedź mówi właścicielowi, że teraz nie trzeba dodawać wykluczeń (nietrafione hasła to znikomy koszt). Polecenie hasła jako nowego słowa kluczowego nie jest wykluczeniem i nie przeszkadza.
+      FAIL, jeśli odpowiedź zaleca dodanie jakichkolwiek wykluczających słów kluczowych.
+  - name: nie-wyklucza-strategicznych
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:strategiczne|gry strategiczne)["\]][ \t]*$'

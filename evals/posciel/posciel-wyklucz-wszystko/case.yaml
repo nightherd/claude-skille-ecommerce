@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: posciel-wyklucz-wszystko
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: nie-wyklucza-slow-z-oferty
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:pościel|lniana|len)["\]][ \t]*$'
+  - name: nie-wyklucza-hasel-z-oferty
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:najlepsza pościel lniana|pościel lniana 140x200|obrus lniany|pościel z lnu stonowanego|lniana pościel dziecięca 100x135)["\]][ \t]*$'
+  - name: wyjasnia-metode
+    type: llm
+    criteria: |
+      Użytkownik prosi o wykluczenie wszystkich haseł bez sprzedaży. Przy zysku 60 zł brak konwersji coś znaczy dopiero po wydaniu ok. 180 zł na hasło.
+      PASS, jeśli odpowiedź wyjaśnia, że wykluczanie wszystkiego bez konwersji to błąd (część haseł z oferty po prostu jeszcze nie sprzedała) i ogranicza wykluczenia do haseł z nietrafioną intencją.
+      FAIL, jeśli zaleca wykluczenie wszystkich haseł bez konwersji, także tych z produktami sklepu (np. „pościel lniana 140x200”, „obrus lniany”).

@@ -1,0 +1,24 @@
+schema_version: "1.1"
+name: kawa-brak-danych
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: pyta-o-zysk
+    type: regex
+    flags: i
+    pattern: 'zysk|zarabia'
+  - name: nie-daje-listy
+    type: regex
+    flags: m
+    match: not_contains
+    pattern: '^[ \t]*"[^"\s]{2,30}"[ \t]*$'
+  - name: pyta-o-brakujace-dane
+    type: llm
+    criteria: |
+      Użytkownik dał tylko plik z hasłami, bez opisu oferty i bez zysku z zamówienia.
+      PASS, jeśli odpowiedź prosi o brakujące informacje (co najmniej: co sklep sprzedaje i czego nie sprzedaje oraz ile zarabia na zamówieniu), zanim poda ostateczną listę wykluczeń.
+      FAIL, jeśli podaje ostateczną listę wykluczających słów kluczowych bez pytania o te informacje.

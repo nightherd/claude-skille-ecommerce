@@ -1,0 +1,56 @@
+schema_version: "1.1"
+name: posciel-przeglad
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: blokuje-koldre-puchowa
+    type: regex
+    flags: mi
+    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kołdra|puchowa|zimowa)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:kołdra puchowa zimowa)\][ \t]*(?:\||$))'
+  - name: nie-wyklucza-koldry
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kołdry)["\]][ \t]*$'
+  - name: nie-wyklucza-koldre
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kołdrę)["\]][ \t]*$'
+  - name: nie-wyklucza-poduszki
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:poduszki)["\]][ \t]*$'
+  - name: blokuje-materac
+    type: regex
+    flags: mi
+    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:materac)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:materac 160x200)\][ \t]*(?:\||$))'
+  - name: blokuje-materace-piankowe
+    type: regex
+    flags: mi
+    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:materace|piankowe)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:materace piankowe)\][ \t]*(?:\||$))'
+  - name: wyklucza-satynowa
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:satynowa)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: nie-wyklucza-rozmiarow
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:160x200|140x200)["\]][ \t]*$'
+  - name: nie-wyklucza-slow-z-oferty
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:pościel|pościeli|lniana|lniane|len)["\]][ \t]*$'
+  - name: powody
+    type: llm
+    criteria: |
+      Sklep sprzedaje lnianą pościel, prześcieradła, poszewki na kołdry i poduszki, ręczniki i obrusy. Nie sprzedaje kołder, poduszek, materacy, zasłon, firan ani pościeli z innych materiałów.
+      PASS, jeśli każde proponowane wykluczenie ma powód oparty na intencji wyszukiwania (produkt spoza oferty, inny sklep, pytanie lub poradnik bez zamiaru zakupu, usługa, szukanie pracy, słowo zmieniające intencję).
+      FAIL, jeśli któreś wykluczenie uzasadnia tylko brak konwersji albo jeśli odpowiedź proponuje wykluczyć słowa opisujące produkty sklepu (np. „pościel”, „lniana”, „len”, „poszewki”, „obrus”).

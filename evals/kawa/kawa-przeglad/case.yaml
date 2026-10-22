@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: kawa-przeglad
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: wyklucza-ekspres
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspres)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: wyklucza-ekspresy
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspresy)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: nie-wyklucza-ekspresu
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:ekspresu)["\]][ \t]*$'
+  - name: zostawia-najlepsza
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:najlepsz[a-ząćęłńóśźż]*)["\]][ \t]*$'
+  - name: nie-wyklucza-slow-z-oferty
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kawa|kawy|ziarnista|mielona|specialty)["\]][ \t]*$'
+  - name: wyklucza-tanio
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:tanio)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: powody
+    type: llm
+    criteria: |
+      Sklep sprzedaje świeżo paloną kawę ziarnistą i mieloną. Nie sprzedaje ekspresów, młynków, kapsułek, kawy rozpuszczalnej, herbaty ani kaw innych marek.
+      PASS, jeśli każde proponowane wykluczenie ma powód oparty na intencji wyszukiwania (produkt spoza oferty, inny sklep albo marka, pytanie lub poradnik bez zamiaru zakupu, szukanie pracy, słowo zmieniające intencję przy haśle, które wydało dużo bez sprzedaży).
+      FAIL, jeśli któreś wykluczenie uzasadnia tylko brak konwersji albo jeśli odpowiedź proponuje wykluczyć słowa opisujące produkty sklepu (np. „kawa”, „ziarnista”, „mielona”, „specialty”, „drip”, „chemex”).

@@ -1,0 +1,21 @@
+schema_version: "1.1"
+name: posciel-konkurencja
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: wyklucza-ikea
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ikea)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: wyklucza-jysk
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:jysk)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: wyklucza-allegro
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:allegro)[*_`"”“]{0,3}[ \t]*(?:\||$)'

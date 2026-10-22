@@ -1,0 +1,37 @@
+schema_version: "1.1"
+name: kawa-tylko-lista
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: wyklucza-ekspres
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspres)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: wyklucza-ekspresy
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspresy)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: nie-wyklucza-ekspresu
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:ekspresu)["\]][ \t]*$'
+  - name: zostawia-jaka
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:jaka)["\]][ \t]*$'
+  - name: zostawia-najlepsza
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:najlepsz[a-ząćęłńóśźż]*)["\]][ \t]*$'
+  - name: nie-wyklucza-slow-z-oferty
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kawa|kawy|ziarnista|mielona)["\]][ \t]*$'

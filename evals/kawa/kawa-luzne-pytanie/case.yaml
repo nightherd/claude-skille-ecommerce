@@ -1,0 +1,30 @@
+schema_version: "1.1"
+name: kawa-luzne-pytanie
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: koszt-shopping
+    type: regex
+    flags: i
+    pattern: '712[,.]30'
+  - name: koszt-search
+    type: regex
+    flags: i
+    pattern: '649[,.]70'
+  - name: widoczne-klikniecia
+    type: regex
+    flags: i
+    pattern: '60\s?%'
+  - name: wyklucza-kapsulki
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kapsułki)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: jedno-slowo-nie-fraza
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kapsułki nespresso|kapsułki do kawy|ekspres do kawy)["\]][ \t]*$'

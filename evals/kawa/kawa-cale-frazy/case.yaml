@@ -1,0 +1,22 @@
+schema_version: "1.1"
+name: kawa-cale-frazy
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: wyklucza-ekspres
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspres)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: wyklucza-kapsulki
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kapsułki)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: bez-calych-fraz
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:ekspres do kawy|ekspres ciśnieniowy delonghi|kapsułki nespresso)["\]][ \t]*$'

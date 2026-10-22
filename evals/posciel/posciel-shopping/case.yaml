@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: posciel-shopping
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: zostawia-najlepsza
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:najlepsz[a-ząćęłńóśźż]*)["\]][ \t]*$'
+  - name: zostawia-jaka
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:jaka)["\]][ \t]*$'
+  - name: wyklucza-poradniki
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:jak|prać)[*_`"”“]{0,3}[ \t]*(?:\||$)'

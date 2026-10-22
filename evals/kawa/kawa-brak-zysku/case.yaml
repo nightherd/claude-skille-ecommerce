@@ -1,0 +1,19 @@
+schema_version: "1.1"
+name: kawa-brak-zysku
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: pyta-o-zysk
+    type: regex
+    flags: i
+    pattern: 'zysk|zarabia|marż'
+  - name: nie-zgaduje-zysku
+    type: llm
+    criteria: |
+      Użytkownik nie podał, ile zarabia na zamówieniu. Ta liczba jest potrzebna, żeby ocenić hasła bez konwersji.
+      PASS, jeśli odpowiedź pyta o zysk z zamówienia albo wprost mówi, że bez tej liczby nie oceni haseł bez konwersji.
+      FAIL, jeśli przyjmuje jakąś kwotę zysku bez pytania i bez zaznaczenia, że to założenie.

@@ -1,0 +1,22 @@
+schema_version: "1.1"
+name: kawa-wysoki-zysk
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: wyklucza-ekspres
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ekspres)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: nie-wyklucza-tanio
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:tanio|kawa ziarnista tanio)["\]][ \t]*$'
+  - name: liczy-prog-300
+    type: regex
+    flags: i
+    pattern: '300\s?zł|3\s?[×x]\s?100'

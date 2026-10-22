@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: kawa-sprzedaje-ekspresy
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: nie-wyklucza-ekspresow
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:ekspres|ekspresy|ekspresu)["\]][ \t]*$'
+  - name: nie-wyklucza-mlynkow
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:młyn[a-ząćęłńóśźż]*)["\]][ \t]*$'
+  - name: nie-wyklucza-delonghi
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:delonghi)["\]][ \t]*$'
+  - name: wyklucza-kapsulki
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kapsułki)[*_`"”“]{0,3}[ \t]*(?:\||$)'

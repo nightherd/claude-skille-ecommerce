@@ -1,0 +1,32 @@
+schema_version: "1.1"
+name: posciel-formy-slow
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: wyklucza-ortopedyczne
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:ortopedyczn[a-ząćęłńóśźż]*)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: nie-wyklucza-poduszki
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:poduszki)["\]][ \t]*$'
+  - name: nie-wyklucza-koldre
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kołdrę)["\]][ \t]*$'
+  - name: nie-wyklucza-poscieli
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:pościeli)["\]][ \t]*$'
+  - name: wyklucza-tania
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:tania)[*_`"”“]{0,3}[ \t]*(?:\||$)'

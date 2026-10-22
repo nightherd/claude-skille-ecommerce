@@ -1,0 +1,31 @@
+schema_version: "1.1"
+name: posciel-panel-angielski
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: blokuje-koldre-puchowa
+    type: regex
+    flags: mi
+    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:kołdra|puchowa|zimowa)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:kołdra puchowa zimowa)\][ \t]*(?:\||$))'
+  - name: nie-wyklucza-koldry
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:kołdry)["\]][ \t]*$'
+  - name: blokuje-materac
+    type: regex
+    flags: mi
+    pattern: '(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:materac)[*_`"”“]{0,3}[ \t]*(?:\||$))|(?:(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*\[(?:materac 160x200)\][ \t]*(?:\||$))'
+  - name: nie-wyklucza-poduszki
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:poduszki)["\]][ \t]*$'
+  - name: widoczne-klikniecia
+    type: regex
+    flags: i
+    pattern: '45\s?%'

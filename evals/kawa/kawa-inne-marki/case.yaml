@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: kawa-inne-marki
+context:
+  scaffold_script: przygotuj.sh
+graders:
+  - name: uzywa-skilla
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?przeglad-hasel"'
+  - name: nie-wyklucza-lavazza
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:lavazza)["\]][ \t]*$'
+  - name: nie-wyklucza-segafredo
+    type: regex
+    flags: mi
+    match: not_contains
+    pattern: '^[ \t]*["\[](?:segafredo)["\]][ \t]*$'
+  - name: wyklucza-lidl
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:lidl)[*_`"”“]{0,3}[ \t]*(?:\||$)'
+  - name: wyklucza-allegro
+    type: regex
+    flags: mi
+    pattern: '(?:^|\|)[ \t]*(?:[-*•]|\d+\.)?[ \t]*[*_`"„“]{0,3}(?:allegro)[*_`"”“]{0,3}[ \t]*(?:\||$)'
