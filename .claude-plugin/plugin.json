@@ -1,7 +1,7 @@
 {
   "name": "skille-ecommerce",
   "description": "Skille dla małych sklepów internetowych, które same prowadzą reklamy: przegląd wyszukiwanych haseł Google Ads z pliku CSV.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Night Herd"
   },
