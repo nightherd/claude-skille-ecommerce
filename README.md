@@ -83,22 +83,25 @@ W [`evals/`](evals/) jest zestaw testów dla wbudowanego w Claude Code polecenia
 
 Oceniają to gradery: czy dane słowo jest na liście wykluczeń albo czy go tam nie ma (regex), czy liczby z raportu się zgadzają, czy skill się włączył, a w 8 przypadkach krótka ocena modelu Haiku według kryteriów zapisanych w przypadku. Wynik to średnia część zaliczonych kontroli (1,00 = wszystko dobrze).
 
-Wynik z 22.10.2026: Sonnet 5.5, sędzia Haiku 5.5, Claude Code 2.1.274 na Linuksie, 126 przebiegów, ok. 20 $ według cennika API.
+Wyniki: Sonnet 5.5, sędzia Haiku 5.5, Claude Code 2.1.274 na Linuksie. Bez skilla i skill 0.2: 22.10.2026, 126 przebiegów, ok. 20 $ według cennika API. Skill 0.3 (poprawione reguły, patrz niżej): 23.10.2026, 63 przebiegi tylko ze skillem, ok. 9 $, bo wariant bez skilla się nie zmienia.
 
-| Sklep | Przypadki | Ze skillem | Bez skilla | Różnica |
+| Sklep | Przypadki | Bez skilla | Skill 0.2 | Skill 0.3 |
 |---|---|---|---|---|
-| kawa | 10 | 1,00 | 0,61 | +0,39 |
-| lniana pościel | 6 | 0,95 | 0,76 | +0,19 |
-| planszówki | 3 | 1,00 | 0,78 | +0,22 |
-| prośby spoza zakresu | 2 | 1,00 | 1,00 | 0,00 |
-| razem | 21 | 0,99 | 0,71 | +0,28 |
+| kawa | 10 | 0,61 | 1,00 | 0,99 |
+| lniana pościel | 6 | 0,76 | 0,95 | 1,00 |
+| planszówki | 3 | 0,78 | 1,00 | 1,00 |
+| prośby spoza zakresu | 2 | 1,00 | 1,00 | 1,00 |
+| razem | 21 | 0,71 | 0,99 | 0,99 |
+
+Przebiegi, w których skill zaliczył wszystkie kontrole: 59 z 63 w wersji 0.2 i 62 z 63 w wersji 0.3.
 
 Co wyszło:
 
 - Bez skilla Claude nie pyta o brakujące dane, w tym o zysk z zamówienia, tylko od razu przegląda raport na własnych założeniach.
 - Bez skilla zgadza się wykluczać całe frazy („ekspres do kawy”, „kapsułki nespresso”) zamiast jednego słowa, więc inne warianty z raportu, np. „ekspres przelewowy” i „kapsułki do kawy”, dalej kosztują.
 - Bez skilla nie liczy progu 3 × zysk, a w czystym raporcie pisze „prawie nic nie trzeba wykluczać” i mimo to proponuje drobne wykluczenia, np. „gry logiczne”, choć to gry dla dzieci z oferty sklepu.
-- Skill zaliczył wszystkie kontrole w 59 z 63 przebiegów. Potknięcia są przy pościeli: dwa razy wykluczył „kołdry”, choć sklep sprzedaje poszewki na kołdry, raz nie zablokował hasła „materac 160x200” i raz pominął poradnik „jak prać pościel lnianą”.
+- Skill 0.2 potykał się przy pościeli: dwa razy wykluczył „kołdry”, choć sklep sprzedaje poszewki na kołdry, raz nie zablokował hasła „materac 160x200” i raz pominął poradnik „jak prać pościel lnianą”. W wersji 0.3 reguły mówią wprost, że słowa, którymi klienci opisują produkty z oferty, są chronione w każdej formie, a poniżej progu nie wyklucza się nawet „tanio”. Przykład w instrukcji jest z innej branży (etui na telefony), żeby nie podpowiadać skillowi danych z testów. Po zmianie pościel przeszła bez potknięć, a przy kawie jedna odpowiedź pominęła koszty kampanii.
+- Evale złapały też efekt uboczny pierwszej wersji poprawki: skill zaczął uzasadniać wykluczenie „tanio” samym progiem, bez zmiany intencji, i sędzia to odrzucał. Poprawione przed pełnym przebiegiem.
 - Skill bywał mądrzejszy od testów: nie wykluczył słowa „materac”, bo klienci szukają „prześcieradło na materac”, tylko zablokował samo hasło `[materac 160x200]`. Dlatego gradery sprawdzają, czy hasło jest zablokowane, a nie jedną metodę.
 
 Uruchomienie (każdy przebieg to wywołania modelu z Twojego abonamentu albo konta API):
@@ -116,10 +119,10 @@ Czego to nie mierzy:
 - całej listy wykluczeń: gradery sprawdzają wybrane słowa, a nie każdą pozycję;
 - propozycji wpisanych w zwykłe zdanie zamiast listy albo tabeli: takie się nie liczą, co dotyczy głównie wersji bez skilla;
 - przypadki z kawą są łatwiejsze dla skilla, bo jego instrukcja używa słów z tego przykładu („ekspres”, „najlepsza kawa”); uczciwszy obraz dają pościel i planszówki;
-- jeden model w jednym dniu i 3 przebiegi na przypadek to mała próba.
+- jeden model i 3 przebiegi na przypadek to mała próba: różnica między wersjami 0.2 i 0.3 to kilka przebiegów, więc traktuj ją jako wskazówkę, nie dowód.
 
 ## In English
 
-Free Claude skills (Claude Code and Claude.ai) for small online shops that run their own ads. They work on exported report files, with no API keys and no account access, and never change anything in the account. The first skill reviews a Google Ads search terms export: spend per campaign, terms that waste budget with a reason for each, a paste-ready negative keyword list and converting terms to add as keywords. The method: exclude by intent, not by missing conversions; zero conversions only means something after spending about 3× the profit per order; exclude single words in phrase match; negative keywords don't match Polish inflections, so each form is listed separately. `hasla.py` reads Polish and English exports (CSV and the UTF-16 Excel CSV) with only the Python standard library and has a test. An eval suite for `claude plugin eval` (21 cases, 3 runs each with and without the skill, Sonnet 5.5) scores 0.99 with the skill and 0.71 without it. The skills are written in Polish for Polish shops.
+Free Claude skills (Claude Code and Claude.ai) for small online shops that run their own ads. They work on exported report files, with no API keys and no account access, and never change anything in the account. The first skill reviews a Google Ads search terms export: spend per campaign, terms that waste budget with a reason for each, a paste-ready negative keyword list and converting terms to add as keywords. The method: exclude by intent, not by missing conversions; zero conversions only means something after spending about 3× the profit per order; exclude single words in phrase match; negative keywords don't match Polish inflections, so each form is listed separately. `hasla.py` reads Polish and English exports (CSV and the UTF-16 Excel CSV) with only the Python standard library and has a test. An eval suite for `claude plugin eval` (21 cases, 3 runs each with and without the skill, Sonnet 5.5) scores 0.99 with the skill and 0.71 without it; after rule fixes found by the evals, version 0.3 passes every check in 62 of 63 runs (0.2: 59 of 63). The skills are written in Polish for Polish shops.
 
 Licencja: [MIT](LICENSE).
